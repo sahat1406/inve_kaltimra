@@ -76,8 +76,8 @@
                                 <td>{{ $pelaporan->judul }}</td>
                                 <td>{{ $pelaporan->deskripsi }}</td>
                                 <td><span class="badge badge-success m-2">{{ $pelaporan->status }}</span></td>
-                                <td>{{ $pelaporan->barang->nm_barang }}</td>
-                                <td>{{ $pelaporan->barang->lokasi->lokasi }}</td>
+                                <td>{{ $pelaporan->aset->nm_aset }}</td>
+                                <td>{{ $pelaporan->aset->lokasi->lokasi }}</td>
                                 <td>{{ $pelaporan->created_at }}</td>
                                 <td>{{ $pelaporan->updated_at }}</td>
                             </tr>

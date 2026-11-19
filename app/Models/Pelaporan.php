@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Barang;
+use App\Models\Aset;
 use App\Models\Feedback;
 
 class Pelaporan extends Model
@@ -15,13 +15,13 @@ class Pelaporan extends Model
         'judul',
         'deskripsi',
         'status',
-        'barang_id',
+        'aset_id',
         'user_id',
     ];
 
-    public function barang()
+    public function aset()
     {
-        return $this->belongsTo(Barang::class);
+        return $this->belongsTo(Aset::class);
     }
 
     public function feedback()

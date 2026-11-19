@@ -9,4 +9,9 @@ class Kategori extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function asets()
+    {
+        return $this->hasMany(Aset::class);
+    }
 }

@@ -75,7 +75,7 @@
                                         <tr>
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $pelaporan->judul }}</td>
-                                            <td>{{ $pelaporan->barang->nm_barang }}</td>
+                                            <td>{{ $pelaporan->aset->nm_aset }}</td>
                                             <td> <span class="badge badge-primary m-2">{{ $pelaporan->status }}</span></td>
                                         </tr>
                                     @endforeach
@@ -109,7 +109,7 @@
                                         <tr>
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $pelaporan->judul }}</td>
-                                            <td>{{ $pelaporan->barang->nm_barang }}</td>
+                                            <td>{{ $pelaporan->aset->nm_aset }}</td>
                                             <td> <span class="badge badge-warning m-2">{{ $pelaporan->status }}</span></td>
                                         </tr>
                                     @endforeach
@@ -187,7 +187,7 @@
                                         <tr>
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $pelaporan->judul }}</td>
-                                            <td>{{ $pelaporan->barang->nm_barang }}</td>
+                                            <td>{{ $pelaporan->aset->nm_aset }}</td>
                                             <td>
                                                 @if ($pelaporan->status == 'menunggu')
                                                     <span class="badge badge-warning m-2">{{ $pelaporan->status }}</span>

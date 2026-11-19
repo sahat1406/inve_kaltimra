@@ -30,16 +30,16 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="nm_barang">Nama Aset</label>
-                                    <input type="text" name="nm_barang" class="form-control"
-                                        value="{{ $pelaporan->barang->nm_barang }}" disabled>
+                                    <label for="nm_aset">Nama Aset</label>
+                                    <input type="text" name="nm_aset" class="form-control"
+                                        value="{{ $pelaporan->aset->nm_aset }}" disabled>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="kd_barang">Kode Aset</label>
-                                    <input type="text" name="kd_barang" class="form-control"
-                                        value="{{ $pelaporan->barang->kd_barang }}" disabled>
+                                    <label for="kd_aset">Kode Aset</label>
+                                    <input type="text" name="kd_aset" class="form-control"
+                                        value="{{ $pelaporan->aset->kd_aset }}" disabled>
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -64,14 +64,14 @@
                                 <div class="form-group">
                                     <label for="kategori">Kategori Aset</label>
                                     <input type="text" name="kategori" class="form-control"
-                                        value="{{ $pelaporan->barang->kategori->kategori }}" disabled>
+                                        value="{{ $pelaporan->aset->kategori->kategori }}" disabled>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="lokasi">Lokasi Aset</label>
                                     <input type="text" name="lokasi" class="form-control"
-                                        value="{{ $pelaporan->barang->lokasi->lokasi }}" disabled>
+                                        value="{{ $pelaporan->aset->lokasi->lokasi }}" disabled>
                                 </div>
                             </div>
                         </div>

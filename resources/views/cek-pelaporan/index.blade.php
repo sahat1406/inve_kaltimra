@@ -41,8 +41,8 @@
                                                     <span class="badge badge-success m-2">{{ $pelaporan->status }}</span>
                                                 @endif
                                             </td>
-                                            <td>{{ $pelaporan->barang->nm_barang }}</td>
-                                            <td>{{ $pelaporan->barang->lokasi->lokasi }}</td>
+                                            <td>{{ $pelaporan->aset->nm_aset }}</td>
+                                            <td>{{ $pelaporan->aset->lokasi->lokasi }}</td>
                                             <td>{{ $pelaporan->created_at }}</td>
                                             <td><a href="/cek-pelaporan/detail/{{ $pelaporan->id }}"
                                                     class="btn btn-primary">Detail</a></td>

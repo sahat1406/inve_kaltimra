@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Lokasi;
-use App\Models\Barang;
+use App\Models\Aset;
 use App\Models\Kategori;
 use App\Models\Pelaporan;
 use Carbon\Carbon;
@@ -34,10 +34,10 @@ class DatabaseSeeder extends Seeder
         $kategori = Kategori::firstOrCreate(['kategori' => 'Elektronik']);
         $lokasi = Lokasi::firstOrCreate(['lokasi' => 'Gedung Utama']);
 
-        // Barang
-        $barang = Barang::firstOrCreate([
-            'kd_barang'   => 'BRG001',
-            'nm_barang'   => 'Laptop Lenovo',
+        // Aset
+        $aset = Aset::firstOrCreate([
+            'kd_aset'   => 'AST001',
+            'nm_aset'   => 'Laptop Lenovo',
             'kategori_id' => $kategori->id,
             'lokasi_id'   => $lokasi->id,
             'gambar'      => 'default.jpg',
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             'judul'     => 'Laptop Rusak',
             'deskripsi' => 'Layar tidak menyala dan baterai cepat habis.',
             'status'    => 'menunggu',
-            'barang_id' => $barang->id,
+            'aset_id' => $aset->id,
             'user_id'   => $user->id, // ← pastikan ini ada!
         ]);
     }

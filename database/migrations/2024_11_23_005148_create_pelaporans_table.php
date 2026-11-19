@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->string('judul');
             $table->text('deskripsi');
             $table->string('status')->default('menunggu'); // ✅ Default value 'menunggu'
-            $table->foreignId('barang_id')->constrained('barangs')->onDelete('cascade');
+            $table->foreignId('aset_id')->constrained('asets')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // ✅ Relasi ke users
             $table->timestamps();
         });

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Barang;
+use App\Models\Aset;
 use App\Models\Pelaporan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,28 +15,28 @@ class TambahPelaporanController extends Controller
         return view('tambah-pelaporan.index');
     }
 
-    public function getDataBarang(Request $request)
+    public function getDataAset(Request $request)
     {
         $qrCode = $request->input('result');
-        $barang = Barang::where('kd_barang', $qrCode)->first();
+        $aset = Aset::where('kd_aset', $qrCode)->first();
 
-        $dataBarang = [
+        $dataAset = [
             'id'            => null,
-            'nm_barang'     => null,
+            'nm_aset'       => null,
             'kategori_id'   => null,
             'lokasi_id'     => null
         ];
 
-        if ($barang) {
-            $dataBarang = [
-                'id'        => $barang->id,
-                'nm_barang' => $barang->nm_barang,
-                'kategori'  => $barang->kategori->kategori,
-                'lokasi'    => $barang->lokasi->lokasi
+        if ($aset) {
+            $dataAset = [
+                'id'        => $aset->id,
+                'nm_aset'   => $aset->nm_aset,
+                'kategori'  => $aset->kategori->kategori,
+                'lokasi'    => $aset->lokasi->lokasi
             ];
         }
 
-        return response()->json($dataBarang);
+        return response()->json($dataAset);
     }
 
     public function store(Request $request)
@@ -54,10 +54,10 @@ class TambahPelaporanController extends Controller
         }
 
         Pelaporan::create([
-            'barang_id' => $request->barang_id,
+            'aset_id'   => $request->aset_id,
             'judul'     => $request->judul,
             'deskripsi' => $request->deskripsi,
-            'user_id'   => Auth::id() // ✅ Tambahan penting
+            'user_id'   => Auth::id()
         ]);
 
         return redirect('/tambah-pelaporan')->with('success', 'Berhasil menambahkan pelaporan baru');

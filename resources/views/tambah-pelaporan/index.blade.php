@@ -30,16 +30,16 @@
                     <div class="card-body">
                         <form action="/tambah-pelaporan" method="POST">
                             @csrf
-                            <input type="hidden" name="barang_id" id="id">
+                            <input type="hidden" name="aset_id" id="id">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <label>Nama Aset</label>
-                                        <input type="text" class="form-control" name="nm_barang" id="nm_barang" readonly>
+                                        <input type="text" class="form-control" name="nm_aset" id="nm_aset" readonly>
                                     </div>
                                     <div class="col-lg-6">
                                         <label>Kode Aset</label>
-                                        <input type="text" class="form-control" name="kd_barang" id="result">
+                                        <input type="text" class="form-control" name="kd_aset" id="result">
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +99,7 @@
 
         // Kirim permintaan AJAX GET ke endpoint Laravel
         $.ajax({
-            url: '/get-data-barang',
+            url: '/get-data-aset',
             method: 'GET',
             data: {
                 result: kode
@@ -107,7 +107,7 @@
             success: function (response) {
                 // Tampilkan data ke field lainnya
                 $('#id').val(response.id);
-                $('#nm_barang').val(response.nm_barang);
+                $('#nm_aset').val(response.nm_aset);
                 $('#kategori').val(response.kategori);
                 $('#lokasi').val(response.lokasi);
 
@@ -130,7 +130,7 @@
     <script>
         function onScanSuccess(decodedText, decodedResult) {
             $.ajax({
-                url: '/get-data-barang', // Ganti dengan endpoint yang sesuai di Laravel Anda
+                url: '/get-data-aset', // Ganti dengan endpoint yang sesuai di Laravel Anda
                 method: 'GET',
                 data: {
                     result: decodedText
@@ -139,7 +139,7 @@
                     // Handle the response, update UI with product information
                     $('#result').val(decodedText);
                     $('#id').val(response.id);
-                    $('#nm_barang').val(response.nm_barang);
+                    $('#nm_aset').val(response.nm_aset);
                     $('#kategori').val(response.kategori);
                     $('#lokasi').val(response.lokasi);
                     // Tambahan informasi lainnya sesuai kebutuhan

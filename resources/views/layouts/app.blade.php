@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Login &mdash; SI IVENTARIS</title>
+    <title>Login &mdash; SI INVENTARIS</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo-pln-np.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/img/logo-pln-np.png') }}">
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="assets/modules/bootstrap/css/bootstrap.min.css">

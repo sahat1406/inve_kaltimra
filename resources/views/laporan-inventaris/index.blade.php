@@ -22,17 +22,16 @@
                                         <th>Nama Aset</th>
                                         <th>Tgl. Penambahan</th>
                                         <th>Lokasi</th>
-                                        <th>Lokasi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($barangs as $barang)
+                                    @foreach ($asets as $aset)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $barang->kd_barang }}</td>
-                                            <td>{{ $barang->nm_barang }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($barang->tgl_penambahan)->format('d-m-Y') }}</td>
-                                            <td>{{ $barang->lokasi->lokasi }}</td>
+                                            <td>{{ $aset->kd_aset }}</td>
+                                            <td>{{ $aset->nm_aset }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($aset->tgl_penambahan)->format('d-m-Y') }}</td>
+                                            <td>{{ $aset->lokasi->lokasi }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

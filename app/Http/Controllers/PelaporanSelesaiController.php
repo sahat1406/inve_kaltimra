@@ -20,7 +20,7 @@ class PelaporanSelesaiController extends Controller
 
     public function cetakLaporan($id)
     {
-        $pelaporan = Pelaporan::with(['barang.kategori', 'barang.lokasi'])->findOrFail($id); // ⬅️ otomatis 404 kalau tidak ada
+        $pelaporan = Pelaporan::with(['aset.kategori', 'aset.lokasi'])->findOrFail($id);
     
         $feedback = Feedback::where('pelaporan_id', $pelaporan->id)->first();
         $feedbackReply = $feedback
