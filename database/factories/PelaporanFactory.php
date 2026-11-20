@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Pelaporan;
-use App\Models\Barang;
+use App\Models\Aset;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PelaporanFactory extends Factory
@@ -16,7 +16,7 @@ class PelaporanFactory extends Factory
             'judul'      => $this->faker->sentence,
             'deskripsi'  => $this->faker->paragraph,
             'status'     => 'selesai', // hanya kolom yang tersedia
-            'barang_id'  => Barang::factory(),
+            'aset_id'  => Aset::factory(),
         ];
     }
 }

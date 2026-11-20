@@ -1,8 +1,268 @@
 /**
- *
- * You can write your CSS code here, DO NOT touch the default JavaScript file
- * because it will make it harder for you to update.
- * 
+ * Tema Terpadu PLN Nusantara Power UP Kaltimra (SIA-PLN)
+ * Menyelaraskan tampilan dasbor Stisla dengan halaman login modern.
  */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-/*# sourceMappingURL=custom.css.map */
+:root {
+    --pln-navy: #0A2540;
+    --pln-navy-mid: #0D3B66;
+    --pln-blue: #005B9F;
+    --pln-cyan: #00A8E8;
+    --pln-gold: #FACC15;
+    --bg-canvas: #F4F7FE;
+    --surface-white: #FFFFFF;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+    --border-subtle: #E2E8F0;
+}
+
+body,
+.main-wrapper,
+.main-content {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    background-color: var(--bg-canvas) !important;
+    color: var(--text-primary);
+}
+
+h1, h2, h3, h4, h5, h6,
+.section-header h1,
+.card-header h4,
+.sidebar-brand a {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* Top Navbar & Banner Header */
+.navbar-bg {
+    background: linear-gradient(135deg, var(--pln-navy) 0%, var(--pln-navy-mid) 55%, var(--pln-blue) 100%) !important;
+    height: 70px !important;
+}
+
+.main-navbar {
+    height: 70px !important;
+}
+
+.main-navbar .nav-link,
+.main-navbar .nav-link-user {
+    color: #FFFFFF !important;
+    font-weight: 500;
+}
+
+/* Sidebar Korporat senada dengan Panel Kiri Login */
+.main-sidebar,
+.main-sidebar .sidebar-wrapper {
+    background-color: var(--pln-navy) !important;
+    box-shadow: 4px 0 24px rgba(10, 37, 64, 0.08) !important;
+}
+
+.main-sidebar .sidebar-brand {
+    height: 70px;
+    line-height: 70px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(7, 26, 46, 0.45);
+}
+
+.main-sidebar .sidebar-brand a {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.6px !important;
+    font-size: 1.05rem !important;
+}
+
+.main-sidebar .sidebar-menu li.menu-header {
+    color: #7DD3FC !important;
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+    margin-top: 12px;
+}
+
+.main-sidebar .sidebar-menu li a {
+    color: rgba(255, 255, 255, 0.78) !important;
+    font-weight: 500;
+    border-radius: 10px;
+    margin: 2px 12px;
+    width: auto !important;
+    height: 42px;
+    transition: all 0.2s ease;
+}
+
+.main-sidebar .sidebar-menu li a:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #FFFFFF !important;
+}
+
+.main-sidebar .sidebar-menu li.active a {
+    background: linear-gradient(135deg, rgba(0, 168, 232, 0.24) 0%, rgba(0, 91, 159, 0.35) 100%) !important;
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    border-left: 3px solid var(--pln-cyan);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.main-sidebar .sidebar-menu li.active a i {
+    color: #38BDF8 !important;
+}
+
+body.sidebar-mini .main-sidebar .sidebar-menu > li > a {
+    margin: 4px 10px;
+}
+
+/* Section Header */
+.section .section-header {
+    background-color: var(--surface-white) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03) !important;
+    padding: 18px 24px !important;
+    margin-bottom: 24px !important;
+}
+
+.section .section-header h1 {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+    font-size: 1.35rem !important;
+    letter-spacing: -0.3px;
+}
+
+/* Cards */
+.card {
+    background-color: var(--surface-white) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card .card-header {
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+    padding: 16px 22px !important;
+    font-weight: 700 !important;
+    color: var(--pln-navy) !important;
+    min-height: 56px;
+}
+
+.card .card-body {
+    padding: 20px 22px !important;
+}
+
+.card.card-primary {
+    border-top: 3px solid var(--pln-blue) !important;
+}
+
+.card.card-info {
+    border-top: 3px solid var(--pln-cyan) !important;
+}
+
+.card.card-success {
+    border-top: 3px solid #10B981 !important;
+}
+
+.card.card-warning {
+    border-top: 3px solid #F59E0B !important;
+}
+
+.card.card-danger {
+    border-top: 3px solid #EF4444 !important;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--pln-navy) 0%, var(--pln-blue) 100%) !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(0, 91, 159, 0.24) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background: linear-gradient(135deg, #071B30 0%, #004A82 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 91, 159, 0.34) !important;
+}
+
+/* Forms */
+.form-control,
+.custom-select {
+    border-radius: 10px !important;
+    border: 1.5px solid var(--border-subtle) !important;
+    background-color: #F8FAFC;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.form-control:focus,
+.custom-select:focus {
+    background-color: #FFFFFF !important;
+    border-color: var(--pln-cyan) !important;
+    box-shadow: 0 0 0 3.5px rgba(0, 168, 232, 0.14) !important;
+}
+
+/* Tables & DataTables */
+.table {
+    color: var(--text-primary);
+}
+
+.table thead th,
+table.dataTable thead th {
+    background-color: #F8FAFC !important;
+    color: var(--text-secondary) !important;
+    font-weight: 700 !important;
+    font-size: 0.78rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-top: none !important;
+    border-bottom: 1.5px solid var(--border-subtle) !important;
+}
+
+.table td,
+.table th {
+    vertical-align: middle !important;
+    border-color: var(--border-subtle) !important;
+}
+
+/* Badges */
+.badge {
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    padding: 5px 10px !important;
+    font-size: 0.75rem !important;
+}
+
+.badge-primary {
+    background-color: rgba(0, 91, 159, 0.12) !important;
+    color: var(--pln-blue) !important;
+}
+
+.badge-warning {
+    background-color: rgba(245, 158, 11, 0.14) !important;
+    color: #B45309 !important;
+}
+
+.badge-success {
+    background-color: rgba(16, 185, 129, 0.14) !important;
+    color: #047857 !important;
+}
+
+.badge-danger {
+    background-color: rgba(239, 68, 68, 0.14) !important;
+    color: #B91C1C !important;
+}
+
+/* Footer */
+.main-footer {
+    background-color: transparent !important;
+    border-top: 1px solid var(--border-subtle) !important;
+    color: var(--text-secondary) !important;
+    font-size: 0.82rem;
+}

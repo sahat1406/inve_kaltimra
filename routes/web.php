@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MerkController;
-use App\Http\Controllers\BarangController;
+use App\Http\Controllers\AsetController;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\CekPelaporanController;
@@ -14,6 +14,7 @@ use App\Http\Controllers\PelaporanSelesaiController;
 use App\Http\Controllers\LaporanInventarisController;
 use App\Http\Controllers\LaporanPerbaikanController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\MagicLoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,14 +29,33 @@ use App\Http\Controllers\UserController;
 
 
 
-Auth::routes();
+Auth::routes([
+    'register' => false,
+    'reset'    => false,
+    'verify'   => false,
+]);
+
+Route::middleware('guest')->group(function () {
+    Route::get('/password/reset', [MagicLoginController::class, 'showRequestForm'])
+        ->name('password.request');
+
+    Route::post('/password/email', [MagicLoginController::class, 'sendLoginLink'])
+        ->middleware('throttle:3,1')
+        ->name('password.email');
+
+    Route::get('/login/magic/{user}', [MagicLoginController::class, 'authenticate'])
+        ->middleware('signed')
+        ->name('login.magic');
+});
 Route::middleware('auth')->group(function () {
     // Diubah dari 'CheckRole' menjadi 'checkrole' (huruf kecil)
     Route::group(['middleware'  => 'checkrole:admin,user'], function () {
         Route::get('/', [HomeController::class, 'index']);
         Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-        Route::resource('/barang', BarangController::class);
+        Route::get('/asets/cetak-semua-qr', [AsetController::class, 'cetakSemuaQr']);
+        Route::get('/asets/{id}/cetak-qr', [AsetController::class, 'cetakQr']);
+        Route::resource('/asets', AsetController::class);
         Route::resource('/kategori', KategoriController::class);
         Route::resource('/merk', MerkController::class);
         Route::resource('/lokasi', LokasiController::class);
@@ -64,7 +84,7 @@ Route::middleware('auth')->group(function () {
     // Diubah dari 'CheckRole' menjadi 'checkrole' (huruf kecil)
     Route::group(['middleware'  => 'checkrole:user'], function () {
         Route::get('/tambah-pelaporan', [TambahPelaporanController::class, 'index']);
-        Route::get('/get-data-barang', [TambahPelaporanController::class, 'getDataBarang']);
+        Route::get('/get-data-aset', [TambahPelaporanController::class, 'getDataAset']);
         Route::post('/tambah-pelaporan', [TambahPelaporanController::class, 'store']);
 
         Route::get('/cek-pelaporan', [CekPelaporanController::class, 'index']);

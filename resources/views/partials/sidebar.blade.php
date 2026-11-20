@@ -13,7 +13,7 @@
     
             @if (auth()->user()->role->role == 'admin')
                 <li class="menu-header">Data Master</li>
-                <li><a class="nav-link" href="/barang"><i class="fa fa-solid fa-cubes-stacked"></i>
+                <li><a class="nav-link" href="/asets"><i class="fa fa-solid fa-cubes-stacked"></i>
                         <span>Aset</span></a>
                 </li>
                 <li><a class="nav-link" href="/kategori"><i class="fa fa-solid fa-list"></i>
@@ -50,7 +50,7 @@
     
             @else
                 <li class="menu-header">Data Master</li>
-                <li><a class="nav-link" href="/barang"><i class="fa fa-solid fa-cubes-stacked"></i>
+                <li><a class="nav-link" href="/asets"><i class="fa fa-solid fa-cubes-stacked"></i>
                         <span>Aset</span></a>
                 </li>
                 <li><a class="nav-link" href="/kategori"><i class="fa fa-solid fa-list"></i>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Barang;
+use App\Models\Aset;
 use App\Models\Lokasi;
 use App\Models\Pelaporan;
 use Illuminate\Http\Request;
@@ -27,7 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $totalInventaris    = Barang::count();
+        $totalInventaris    = Aset::count();
         $totalLokasi        = Lokasi::count();
         $pelaporanPending   = Pelaporan::where('status', 'menunggu')->count();
         $pelaporanSelesai   = Pelaporan::where('status', 'selesai')->count();

@@ -43,34 +43,34 @@
 
         <table>
             <tr>
-                <td><b>Judul Pelaporan</b></td>
+                <td><b>Titik Koordinat</b></td>
                 <td>:</td>
                 <td>{{ $pelaporan->judul }}</td>
             </tr>
             <tr>
-                <td><b>Deskripsi Pelaporan</b></td>
+                <td><b>Kondisi Aset</b></td>
                 <td>:</td>
                 <td>{{ $pelaporan->deskripsi }}</td>
             </tr>
             <tr>
                 <td><b>Nama Aset</b></td>
                 <td>:</td>
-                <td>{{ optional($pelaporan->barang)->nm_barang }}</td>
+                <td>{{ optional($pelaporan->aset)->nm_aset }}</td>
             </tr>
             <tr>
                 <td><b>Merk</b></td>
                 <td>:</td>
-                <td>{{ optional($pelaporan->barang->merk)->merk ?? '-' }}</td>
+                <td>{{ optional($pelaporan->aset->merk)->merk ?? '-' }}</td>
             </tr>
             <tr>
                 <td><b>Kategori</b></td>
                 <td>:</td>
-                <td>{{ optional($pelaporan->barang->kategori)->kategori }}</td>
+                <td>{{ optional($pelaporan->aset->kategori)->kategori }}</td>
             </tr>
             <tr>
                 <td><b>Lokasi</b></td>
                 <td>:</td>
-                <td>{{ optional($pelaporan->barang->lokasi)->lokasi }}</td>
+                <td>{{ optional($pelaporan->aset->lokasi)->lokasi }}</td>
             </tr>
             <tr>
                 <td><b>Tanggal Pelaporan</b></td>

@@ -30,16 +30,24 @@
                     <div class="card-body">
                         <form action="/tambah-pelaporan" method="POST">
                             @csrf
-                            <input type="hidden" name="barang_id" id="id">
+                            <input type="hidden" name="aset_id" id="id" value="{{ old('aset_id') }}">
+                            @error('aset_id')
+                                <div class="alert alert-danger" role="alert">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <label>Nama Aset</label>
-                                        <input type="text" class="form-control" name="nm_barang" id="nm_barang" readonly>
+                                        <input type="text" class="form-control" name="nm_aset" id="nm_aset" value="{{ old('nm_aset') }}" readonly>
                                     </div>
                                     <div class="col-lg-6">
                                         <label>Kode Aset</label>
-                                        <input type="text" class="form-control" name="kd_barang" id="result">
+                                        <input type="text" class="form-control" name="kd_aset" id="result" value="{{ old('kd_aset') }}">
+                                        @error('aset_id')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -47,11 +55,11 @@
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <label>Kategori</label>
-                                        <input type="text" class="form-control" name="kategori" id="kategori" readonly>
+                                        <input type="text" class="form-control" name="kategori" id="kategori" value="{{ old('kategori') }}" readonly>
                                     </div>
                                     <div class="col-lg-4">
                                         <label>Lokasi</label>
-                                        <input type="text" class="form-control" name="lokasi" id="lokasi" readonly>
+                                        <input type="text" class="form-control" name="lokasi" id="lokasi" value="{{ old('lokasi') }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +67,7 @@
                             <div class="row my-2">
                                 <div class="col">
                                     <label>Titik Koordinat <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" name="judul" id="judul">
+                                    <input type="text" class="form-control" name="judul" id="judul" value="{{ old('judul') }}">
                                     @error('judul')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -69,12 +77,12 @@
                                 <div class="col">
                                     <label>Kondisi Aset <span style="color: red">*</span></label>
                                     <select class="form-control" name="kondisi_aset" required>
-                                        <option value="" selected disabled>-- Pilih Kondisi Aset --</option>
-                                        <option value="Operasi">Operasi</option>
-                                        <option value="Idle">Idle</option>
-                                        <option value="Rusak Ringan">Rusak Ringan</option>
-                                        <option value="Rusak Berat">Rusak Berat</option>
-                                        <option value="Extracountable">Extracountable</option>
+                                        <option value="" {{ old('kondisi_aset') ? '' : 'selected' }} disabled>-- Pilih Kondisi Aset --</option>
+                                        <option value="Operasi" {{ old('kondisi_aset') == 'Operasi' ? 'selected' : '' }}>Operasi</option>
+                                        <option value="Idle" {{ old('kondisi_aset') == 'Idle' ? 'selected' : '' }}>Idle</option>
+                                        <option value="Rusak Ringan" {{ old('kondisi_aset') == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
+                                        <option value="Rusak Berat" {{ old('kondisi_aset') == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
+                                        <option value="Extracountable" {{ old('kondisi_aset') == 'Extracountable' ? 'selected' : '' }}>Extracountable</option>
                                     </select>
                                     @error('kondisi_aset')
                                         <div class="text-danger">{{ $message }}</div>
@@ -99,7 +107,7 @@
 
         // Kirim permintaan AJAX GET ke endpoint Laravel
         $.ajax({
-            url: '/get-data-barang',
+            url: '/get-data-aset',
             method: 'GET',
             data: {
                 result: kode
@@ -107,11 +115,14 @@
             success: function (response) {
                 // Tampilkan data ke field lainnya
                 $('#id').val(response.id);
-                $('#nm_barang').val(response.nm_barang);
+                $('#nm_aset').val(response.nm_aset);
                 $('#kategori').val(response.kategori);
                 $('#lokasi').val(response.lokasi);
 
-                },
+                if (!response.id) {
+                    alert("Data aset dengan kode tersebut tidak ditemukan.");
+                }
+            },
             error: function (xhr) {
                 alert("Data tidak ditemukan atau terjadi kesalahan.");
                 console.error(xhr.responseText);
@@ -130,7 +141,7 @@
     <script>
         function onScanSuccess(decodedText, decodedResult) {
             $.ajax({
-                url: '/get-data-barang', // Ganti dengan endpoint yang sesuai di Laravel Anda
+                url: '/get-data-aset', // Ganti dengan endpoint yang sesuai di Laravel Anda
                 method: 'GET',
                 data: {
                     result: decodedText
@@ -139,7 +150,7 @@
                     // Handle the response, update UI with product information
                     $('#result').val(decodedText);
                     $('#id').val(response.id);
-                    $('#nm_barang').val(response.nm_barang);
+                    $('#nm_aset').val(response.nm_aset);
                     $('#kategori').val(response.kategori);
                     $('#lokasi').val(response.lokasi);
                     // Tambahan informasi lainnya sesuai kebutuhan

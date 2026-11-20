@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Barang extends Model
+class Aset extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
@@ -20,8 +20,8 @@ class Barang extends Model
         return $this->belongsTo(Lokasi::class);
     }
 
-    // public function merk()
-    // {
-    //     return $this->belongsTo(Merk::class);
-    // }
+    public function pelaporans()
+    {
+        return $this->hasMany(Pelaporan::class);
+    }
 }

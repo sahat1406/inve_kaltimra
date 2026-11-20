@@ -4,8 +4,8 @@
     <div class="section-header">
         <h1>Data Aset</h1>
         <div class="ml-auto">
-            <a href="/barang/create" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah
-                Aset</a>
+            <a href="/asets/cetak-semua-qr" target="_blank" class="btn btn-dark mr-2"><i class="fa fa-print"></i> Cetak Semua QR Code</a>
+            <a href="/asets/create" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Aset</a>
         </div>
     </div>
 
@@ -13,6 +13,11 @@
         @if (session()->has('success'))
             <div class="alert alert-success" role="alert">
                 {{ session('success') }}
+            </div>
+        @endif
+        @if (session()->has('error'))
+            <div class="alert alert-danger" role="alert">
+                {{ session('error') }}
             </div>
         @endif
         <div class="row">
@@ -31,23 +36,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($barangs as $barang)
+                                    @foreach ($asets as $aset)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td><img src="{{ asset('storage/' . $barang->gambar) }}" alt="gambar barang"
-                                                    style="width: 150px"; height="150px"></td>
-                                            <td>{{ $barang->kd_barang }}</td>
-                                            <td>{{ $barang->nm_barang }}</td>
+                                            <td><img src="{{ asset('storage/' . $aset->gambar) }}" alt="gambar aset"
+                                                    style="width: 120px; height: 120px; object-fit: cover; border-radius: 4px;"></td>
+                                            <td><strong>{{ $aset->kd_aset }}</strong></td>
+                                            <td>{{ $aset->nm_aset }}</td>
                                             <td>
-                                                <a href="/barang/{{ $barang->id }}" class="btn btn-success">Detail</a>
-                                                <a href="/barang/{{ $barang->id }}/edit" class="btn btn-warning">Edit</a>
-                                                <form id="{{ $barang->id }}" action="/barang/{{ $barang->id }}"
+                                                <a href="/asets/{{ $aset->id }}" class="btn btn-success btn-sm">Detail</a>
+                                                <a href="/asets/{{ $aset->id }}/edit" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="/asets/{{ $aset->id }}/cetak-qr" target="_blank" class="btn btn-info btn-sm" title="Cetak Label QR Code">
+                                                    <i class="fa fa-qrcode"></i> Cetak QR
+                                                </a>
+                                                <form id="{{ $aset->id }}" action="/asets/{{ $aset->id }}"
                                                     method="POST" class="d-inline">
                                                     @method('delete')
                                                     @csrf
-                                                    <div class="btn btn-danger swal-confirm"
-                                                        data-form="{{ $barang->id }}">Hapus
-                                                    </div>
+                                                    <button type="button" class="btn btn-danger btn-sm swal-confirm"
+                                                        data-form="{{ $aset->id }}">Hapus
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>
