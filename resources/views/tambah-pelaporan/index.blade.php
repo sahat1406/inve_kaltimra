@@ -30,16 +30,21 @@
                     <div class="card-body">
                         <form action="/tambah-pelaporan" method="POST">
                             @csrf
+<<<<<<< HEAD
                             <input type="hidden" name="aset_id" id="id" value="{{ old('aset_id') }}">
                             @error('aset_id')
                                 <div class="alert alert-danger" role="alert">
                                     {{ $message }}
                                 </div>
                             @enderror
+=======
+                            <input type="hidden" name="aset_id" id="id">
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <label>Nama Aset</label>
+<<<<<<< HEAD
                                         <input type="text" class="form-control" name="nm_aset" id="nm_aset" value="{{ old('nm_aset') }}" readonly>
                                     </div>
                                     <div class="col-lg-6">
@@ -48,6 +53,13 @@
                                         @error('aset_id')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
+=======
+                                        <input type="text" class="form-control" name="nm_aset" id="nm_aset" readonly>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label>Kode Aset</label>
+                                        <input type="text" class="form-control" name="kd_aset" id="result">
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
                                     </div>
                                 </div>
                             </div>

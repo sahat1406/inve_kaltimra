@@ -38,7 +38,11 @@
                     name="email"
                     value="{{ old('email') }}"
                     class="form-control @error('email') is-invalid @enderror"
+<<<<<<< HEAD
                     placeholder="Masukkan Email  Anda"
+=======
+                    placeholder="nama@plnnusantarapower.co.id"
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
                     required
                     autofocus
                     autocomplete="username"

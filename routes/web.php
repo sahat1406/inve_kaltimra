@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\MerkController;
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
 use App\Http\Controllers\AsetController;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\KategoriController;
@@ -13,7 +17,10 @@ use App\Http\Controllers\PelaporanSelesaiController;
 use App\Http\Controllers\LaporanInventarisController;
 use App\Http\Controllers\LaporanPerbaikanController;
 use App\Http\Controllers\UserController;
+<<<<<<< HEAD
 use App\Http\Controllers\ChangePasswordController;
+=======
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
 use App\Http\Controllers\Auth\MagicLoginController;
 
 /*
@@ -31,11 +38,25 @@ use App\Http\Controllers\Auth\MagicLoginController;
 
 Auth::routes([
     'register' => false,
+<<<<<<< HEAD
     'reset'    => true,
+=======
+    'reset'    => false,
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
     'verify'   => false,
 ]);
 
 Route::middleware('guest')->group(function () {
+<<<<<<< HEAD
+=======
+    Route::get('/password/reset', [MagicLoginController::class, 'showRequestForm'])
+        ->name('password.request');
+
+    Route::post('/password/email', [MagicLoginController::class, 'sendLoginLink'])
+        ->middleware('throttle:3,1')
+        ->name('password.email');
+
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
     Route::get('/login/magic/{user}', [MagicLoginController::class, 'authenticate'])
         ->middleware('signed')
         ->name('login.magic');
@@ -46,8 +67,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [HomeController::class, 'index']);
         Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+<<<<<<< HEAD
         Route::get('/asets/cetak-semua-qr', [AsetController::class, 'cetakSemuaQr']);
         Route::get('/asets/{id}/cetak-qr', [AsetController::class, 'cetakQr']);
+=======
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
         Route::resource('/asets', AsetController::class);
         Route::resource('/kategori', KategoriController::class);
         Route::resource('/lokasi', LokasiController::class);

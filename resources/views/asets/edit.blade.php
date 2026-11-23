@@ -33,7 +33,11 @@
                             </div>
 
                             <div class="row mt-3">
+<<<<<<< HEAD
                                 <div class="col-6">
+=======
+                                <div class="col-4">
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
                                     <label>Kategori <span style="color: red">*</span></label>
                                     <select class="form-control" name="kategori_id">
                                         @foreach ($kategories as $kategori)
@@ -49,7 +53,27 @@
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+<<<<<<< HEAD
                                 <div class="col-6">
+=======
+                                {{-- <div class="col-4">
+                                    <label>Merek <span style="color: red">*</span></label>
+                                    <select class="form-control" name="merk_id">
+                                        @foreach ($merks as $merk)
+                                            @if (old('merk_id', $aset->merk_id) == $merk->id)
+                                                <option value="{{ $merk->id }}" selected>{{ $merk->merk }}
+                                                </option>
+                                            @else
+                                                <option value="{{ $merk->id }}">{{ $merk->merk }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    @error('merk_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div> --}}
+                                <div class="col-4">
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
                                     <label>Lokasi <span style="color: red">*</span></label>
                                     <select class="form-control" name="lokasi_id">
                                         @foreach ($lokasies as $lokasi)
@@ -67,6 +91,7 @@
                                 </div>
                             </div>
 
+<<<<<<< HEAD
                             <div class="form-group mb-3 mt-3">
                                 <label for="satuan">Satuan</label>
                                 <select class="form-control" name="satuan" id="satuan">
@@ -93,6 +118,8 @@
                                 <textarea class="form-control" name="ket_lok" rows="2">{{ old('ket_lok', $aset->ket_lok) }}</textarea>
                             </div>
 
+=======
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
                         </div>
                     </div>
                 </div>

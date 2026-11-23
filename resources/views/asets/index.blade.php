@@ -4,8 +4,13 @@
     <div class="section-header">
         <h1>Data Aset</h1>
         <div class="ml-auto">
+<<<<<<< HEAD
             <a href="/asets/cetak-semua-qr" target="_blank" class="btn btn-dark mr-2"><i class="fa fa-print"></i> Cetak Semua QR Code</a>
             <a href="/asets/create" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Aset</a>
+=======
+            <a href="/asets/create" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah
+                Aset</a>
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
         </div>
     </div>
 
@@ -15,11 +20,14 @@
                 {{ session('success') }}
             </div>
         @endif
+<<<<<<< HEAD
         @if (session()->has('error'))
             <div class="alert alert-danger" role="alert">
                 {{ session('error') }}
             </div>
         @endif
+=======
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
         <div class="row">
             <div class="col">
                 <div class="card card-primary">
@@ -40,6 +48,7 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td><img src="{{ asset('storage/' . $aset->gambar) }}" alt="gambar aset"
+<<<<<<< HEAD
                                                     style="width: 120px; height: 120px; object-fit: cover; border-radius: 4px;"></td>
                                             <td><strong>{{ $aset->kd_aset }}</strong></td>
                                             <td>{{ $aset->nm_aset }}</td>
@@ -49,13 +58,27 @@
                                                 <a href="/asets/{{ $aset->id }}/cetak-qr" target="_blank" class="btn btn-info btn-sm" title="Cetak Label QR Code">
                                                     <i class="fa fa-qrcode"></i> Cetak QR
                                                 </a>
+=======
+                                                    style="width: 150px"; height="150px"></td>
+                                            <td>{{ $aset->kd_aset }}</td>
+                                            <td>{{ $aset->nm_aset }}</td>
+                                            <td>
+                                                <a href="/asets/{{ $aset->id }}" class="btn btn-success">Detail</a>
+                                                <a href="/asets/{{ $aset->id }}/edit" class="btn btn-warning">Edit</a>
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
                                                 <form id="{{ $aset->id }}" action="/asets/{{ $aset->id }}"
                                                     method="POST" class="d-inline">
                                                     @method('delete')
                                                     @csrf
+<<<<<<< HEAD
                                                     <button type="button" class="btn btn-danger btn-sm swal-confirm"
                                                         data-form="{{ $aset->id }}">Hapus
                                                     </button>
+=======
+                                                    <div class="btn btn-danger swal-confirm"
+                                                        data-form="{{ $aset->id }}">Hapus
+                                                    </div>
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
                                                 </form>
                                             </td>
                                         </tr>

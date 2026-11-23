@@ -21,10 +21,17 @@ class TambahPelaporanController extends Controller
         $aset = Aset::where('kd_aset', $qrCode)->first();
 
         $dataAset = [
+<<<<<<< HEAD
             'id'        => null,
             'nm_aset'   => null,
             'kategori'  => null,
             'lokasi'    => null
+=======
+            'id'            => null,
+            'nm_aset'       => null,
+            'kategori_id'   => null,
+            'lokasi_id'     => null
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
         ];
 
         if ($aset) {
@@ -59,7 +66,11 @@ class TambahPelaporanController extends Controller
         Pelaporan::create([
             'aset_id'   => $request->aset_id,
             'judul'     => $request->judul,
+<<<<<<< HEAD
             'deskripsi' => $request->kondisi_aset,
+=======
+            'deskripsi' => $request->deskripsi,
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
             'user_id'   => Auth::id()
         ]);
 

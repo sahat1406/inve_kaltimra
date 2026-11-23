@@ -10,10 +10,15 @@ use App\Models\Pelaporan;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Http\Request;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+=======
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
 
 class AsetController extends Controller
 {
@@ -39,8 +44,12 @@ class AsetController extends Controller
             'nm_aset' => 'required',
             'deskripsi' => 'required',
             'kategori_id' => 'required',
+<<<<<<< HEAD
             'lokasi_id' => 'required',
             'qty' => 'nullable|integer|min:1|max:100',
+=======
+            'lokasi_id' => 'required'
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
         ], [
             'gambar.required' => 'Wajib menambahkan gambar!',
             'gambar.mimes' => 'Format gambar yang diizinkan: jpeg, jpg, png.',
@@ -48,9 +57,12 @@ class AsetController extends Controller
             'deskripsi.required' => 'Form wajib diisi!',
             'kategori_id.required' => 'Form wajib dipilih!',
             'lokasi_id.required' => 'Form wajib dipilih!',
+<<<<<<< HEAD
             'qty.integer' => 'Quantity harus berupa angka!',
             'qty.min' => 'Quantity minimal 1!',
             'qty.max' => 'Quantity maksimal 100 sekaligus!',
+=======
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
         ]);
 
         if ($validator->fails()) {
@@ -61,10 +73,15 @@ class AsetController extends Controller
         if ($request->hasFile('gambar')) {
             $path = 'gambar/';
             $file = $request->file('gambar');
+<<<<<<< HEAD
+=======
+            $extension = $file->getClientOriginalExtension();
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
             $fileName = $file->hashName();
             $gambar = $file->storeAs($path, $fileName, 'public');
         }
 
+<<<<<<< HEAD
         $qty = max(1, (int) $request->input('qty', 1));
         $baseName = trim($request->nm_aset);
 
@@ -144,10 +161,37 @@ class AsetController extends Controller
             : 'Berhasil menambahkan data aset baru';
 
         return redirect('/asets')->with('success', $successMsg);
+=======
+        $kd_aset = 'AST-' . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT);
+        $qrCodePath = 'qrcode/' . $kd_aset . '.png';
+
+if (!Storage::disk('public')->exists($qrCodePath)) {
+    $qrCode = new QrCode($kd_aset);
+    $writer = new PngWriter();
+
+    $qrImage = $writer->write($qrCode);
+
+    // Simpan hasil QR ke storage
+    Storage::disk('public')->put($qrCodePath, $qrImage->getString());
+}
+
+        Aset::create([
+            'kd_aset' => $kd_aset,
+            'nm_aset' => $request->nm_aset,
+            'deskripsi' => $request->deskripsi,
+            'tgl_penambahan' => $request->tgl_penambahan,
+            'gambar' => $gambar,
+            'kategori_id' => $request->kategori_id,
+            'lokasi_id' => $request->lokasi_id,
+        ]);
+
+        return redirect('/asets')->with('success', 'Berhasil menambahkan data aset baru');
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
     }
 
     public function show(string $id)
     {
+<<<<<<< HEAD
         $aset = Aset::with(['kategori', 'lokasi'])->findOrFail($id);
 
         // Pastikan QR code file tersedia di storage jika belum ada
@@ -172,11 +216,20 @@ class AsetController extends Controller
                 ->limit(12)
                 ->get();
         }
+=======
+        $aset = Aset::findOrFail($id);
+
+        // Ambil pelaporan lengkap dengan relasi feedback-nya
+        $pelaporans = Pelaporan::with('feedback')->where('aset_id', $aset->id)->get();
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
 
         return view('asets.show', [
             'aset' => $aset,
             'pelaporans' => $pelaporans,
+<<<<<<< HEAD
             'batchAsets' => $batchAsets,
+=======
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
         ]);
     }
 
@@ -215,12 +268,17 @@ class AsetController extends Controller
 
         $gambar = $aset->gambar;
         if ($request->hasFile('gambar')) {
+<<<<<<< HEAD
             // Hapus gambar lama hanya jika tidak dipakai oleh aset lain
             if ($aset->gambar && Storage::disk('public')->exists($aset->gambar)) {
                 $isShared = Aset::where('gambar', $aset->gambar)->where('id', '!=', $aset->id)->exists();
                 if (!$isShared) {
                     Storage::disk('public')->delete($aset->gambar);
                 }
+=======
+            if ($aset->gambar && Storage::disk('public')->exists($aset->gambar)) {
+                Storage::disk('public')->delete($aset->gambar);
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
             }
 
             $path = 'gambar/';
@@ -231,6 +289,7 @@ class AsetController extends Controller
         }
 
         $aset->update([
+<<<<<<< HEAD
             'nm_aset'        => $request->nm_aset,
             'no_sub_aset'    => $request->no_sub_aset,
             'satuan'         => $request->satuan ?? ($aset->satuan ?? 'unit'),
@@ -241,6 +300,13 @@ class AsetController extends Controller
             'gambar'         => $gambar,
             'kategori_id'    => $request->kategori_id,
             'lokasi_id'      => $request->lokasi_id,
+=======
+            'nm_aset' => $request->nm_aset,
+            'deskripsi' => $request->deskripsi,
+            'gambar' => $gambar,
+            'kategori_id' => $request->kategori_id,
+            'lokasi_id' => $request->lokasi_id,
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
         ]);
 
         return redirect('/asets')->with('success', 'Berhasil memperbarui data aset');
@@ -250,12 +316,17 @@ class AsetController extends Controller
     {
         $aset = Aset::findOrFail($id);
 
+<<<<<<< HEAD
         // Hapus gambar fisik hanya jika tidak dipakai oleh aset lain
         if ($aset->gambar && Storage::disk('public')->exists($aset->gambar)) {
             $isShared = Aset::where('gambar', $aset->gambar)->where('id', '!=', $aset->id)->exists();
             if (!$isShared) {
                 Storage::disk('public')->delete($aset->gambar);
             }
+=======
+        if ($aset->gambar && Storage::disk('public')->exists($aset->gambar)) {
+            Storage::disk('public')->delete($aset->gambar);
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
         }
 
         $qrPath = 'qrcode/' . $aset->kd_aset . '.png';
@@ -267,6 +338,7 @@ class AsetController extends Controller
 
         return redirect()->back()->with('success', 'Berhasil menghapus data aset');
     }
+<<<<<<< HEAD
 
     /**
      * Cetak label QR Code untuk satu aset
@@ -321,4 +393,6 @@ class AsetController extends Controller
             'lokasies' => Lokasi::all(),
         ]);
     }
+=======
+>>>>>>> d321031bfff1f6fca905e3458c03a427b7e761c8
 }
