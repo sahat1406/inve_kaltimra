@@ -1,0 +1,87 @@
+<aside id="sidebar-wrapper">
+        <div class="sidebar-brand">
+            <a href="/">SIA-PLN</a>
+        </div>
+        <div class="sidebar-brand sidebar-brand-sm">
+            <a href="/">SIA-PLN</a>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="menu-header">Dashboard</li>
+            <li><a class="nav-link" href="/"><i class="fa fa-fire"></i>
+                    <span>Dashboard</span></a>
+            </li>
+    
+            @if (auth()->user()->role->role == 'manager')
+                <li class="menu-header">Data Master</li>
+                <li><a class="nav-link" href="/asets"><i class="fa fa-solid fa-cubes-stacked"></i>
+                        <span>Aset</span></a>
+                </li>
+                <li><a class="nav-link" href="/kategori"><i class="fa fa-solid fa-list"></i>
+                        <span>Kategori</span></a>
+                </li>
+                {{-- <li><a class="nav-link" href="/merk"><i class="fa fa-regular fa-copyright"></i>
+                        <span>Merek</span></a>
+                </li> --}}
+                <li><a class="nav-link" href="/lokasi"><i class="fa fa-solid fa-school"></i>
+                        <span>Lokasi</span></a>
+                </li>
+    
+                <li class="menu-header">Pelaporan</li>
+                <li><a class="nav-link" href="/pelaporan-masuk"><i class="fa fa-solid fa-file-arrow-down"></i>
+                        <span>Pelaporan masuk</span></a>
+                </li>
+                <li><a class="nav-link" href="/pelaporan-selesai"><i class="fa fa-sharp fa-file-circle-check"></i>
+                        <span>Pelaporan Selesai</span></a>
+                </li>
+    
+                <li class="menu-header">Laporan</li>
+                <li><a class="nav-link" href="/laporan-inventaris"><i class="fa fa-solid fa-print"></i>
+                        <span>Laporan Aset</span></a>
+                </li>
+                <li><a class="nav-link" href="/laporan-perbaikan"><i class="fa fa-regular fa-file-pdf"></i>
+                        <span>Laporan Perbaikan</span></a>
+                </li>
+    
+                {{-- MENU PENGATURAN SUDAH DITAMBAHKAN DI SINI --}}
+                <li class="menu-header">Pengaturan</li>
+                <li class="{{ Request::is('user*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('user.index') }}"><i class="fas fa-users-cog"></i>
+                        <span>Manajemen User</span></a>
+                </li>
+                <li class="{{ Request::is('profil*') || Request::is('ubah-password*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('profile') }}"><i class="fas fa-user-circle"></i>
+                        <span>Profil</span></a>
+                </li>
+    
+            @else
+                <li class="menu-header">Data Master</li>
+                <li><a class="nav-link" href="/asets"><i class="fa fa-solid fa-cubes-stacked"></i>
+                        <span>Aset</span></a>
+                </li>
+                <li><a class="nav-link" href="/kategori"><i class="fa fa-solid fa-list"></i>
+                        <span>Kategori</span></a>
+                </li>
+                {{-- <li><a class="nav-link" href="/merk"><i class="fa fa-regular fa-copyright"></i>
+                        <span>Merek</span></a>
+                </li> --}}
+                <li><a class="nav-link" href="/lokasi"><i class="fa fa-solid fa-school"></i>
+                        <span>Lokasi</span></a>
+                </li>
+    
+                <li class="menu-header">Pelaporan</li>
+                <li><a class="nav-link" href="/tambah-pelaporan"><i class="fa fa-solid fa-file-arrow-down"></i>
+                        <span>Pelaporan Aset</span></a>
+                </li>
+                <li><a class="nav-link" href="/cek-pelaporan"><i class="fa fa-solid fa-file-circle-question"></i>
+                        <span>Cek Hasil Pelaporan</span></a>
+                </li>
+                <li><a class="nav-link" href="/pelaporan-selesai"><i class="fa fa-sharp fa-file-circle-check"></i>
+                        <span>Pelaporan Selesai</span></a>
+                </li>
+
+                <li class="menu-header">Pengaturan</li>
+                <li class="{{ Request::is('profil*') || Request::is('ubah-password*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('profile') }}"><i class="fas fa-user-circle"></i>
+                        <span>Profil</span></a>
+                </li>
+            @endif
+        </ul>
+    </aside>
+  
