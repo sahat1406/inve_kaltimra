@@ -12,23 +12,23 @@ class UserControllerTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function admin_dapat_menambah_user_baru()
+    public function manager_dapat_menambah_user_baru()
     {
-        $adminRole = Role::factory()->create(['role' => 'admin']);
-        $userRole = Role::factory()->create(['role' => 'user']);
+        $managerRole = Role::create(['id' => 1, 'role' => 'manager']);
+        $adminRole = Role::create(['id' => 2, 'role' => 'admin']);
 
-        $admin = User::factory()->create([
-            'role_id' => $adminRole->id,
+        $manager = User::factory()->create([
+            'role_id' => $managerRole->id,
         ]);
 
-        $this->actingAs($admin);
+        $this->actingAs($manager);
 
         $newUserData = [
             'name' => 'User Baru',
             'email' => 'userbaru@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
-            'role_id' => $userRole->id,
+            'role_id' => $adminRole->id,
         ];
 
         $response = $this->post(route('user.store'), $newUserData);
@@ -39,7 +39,7 @@ class UserControllerTest extends TestCase
         $this->assertDatabaseHas('users', [
             'name' => 'User Baru',
             'email' => 'userbaru@example.com',
-            'role_id' => $userRole->id,
+            'role_id' => $adminRole->id,
         ]);
     }
 }

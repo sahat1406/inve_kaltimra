@@ -15,19 +15,19 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Roles
-        Role::firstOrCreate(['id' => 1], ['role' => 'admin']);
-        Role::firstOrCreate(['id' => 2], ['role' => 'user']);
+        // Roles: ID 1 = manager, ID 2 = admin
+        Role::firstOrCreate(['id' => 1], ['role' => 'manager']);
+        Role::firstOrCreate(['id' => 2], ['role' => 'admin']);
 
         // Users
         $admin = User::firstOrCreate(
             ['email' => 'admin@gmail.com'],
-            ['name' => 'admin', 'password' => bcrypt('1234'), 'role_id' => 1]
+            ['name' => 'manager', 'password' => bcrypt('1234'), 'role_id' => 1]
         );
 
         $user = User::firstOrCreate(
             ['email' => 'user@gmail.com'],
-            ['name' => 'user', 'password' => bcrypt('1234'), 'role_id' => 2]
+            ['name' => 'admin', 'password' => bcrypt('1234'), 'role_id' => 2]
         );
 
         // Kategori & Lokasi

@@ -33,7 +33,7 @@
                             </div>
 
                             <div class="row mt-3">
-                                <div class="col-4">
+                                <div class="col-6">
                                     <label>Kategori <span style="color: red">*</span></label>
                                     <select class="form-control" name="kategori_id">
                                         @foreach ($kategories as $kategori)
@@ -49,23 +49,7 @@
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                {{-- <div class="col-4">
-                                    <label>Merek <span style="color: red">*</span></label>
-                                    <select class="form-control" name="merk_id">
-                                        @foreach ($merks as $merk)
-                                            @if (old('merk_id', $aset->merk_id) == $merk->id)
-                                                <option value="{{ $merk->id }}" selected>{{ $merk->merk }}
-                                                </option>
-                                            @else
-                                                <option value="{{ $merk->id }}">{{ $merk->merk }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                    @error('merk_id')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div> --}}
-                                <div class="col-4">
+                                <div class="col-6">
                                     <label>Lokasi <span style="color: red">*</span></label>
                                     <select class="form-control" name="lokasi_id">
                                         @foreach ($lokasies as $lokasi)
@@ -81,6 +65,32 @@
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                            </div>
+
+                            <div class="form-group mb-3 mt-3">
+                                <label for="satuan">Satuan</label>
+                                <select class="form-control" name="satuan" id="satuan">
+                                    <option value="unit" {{ old('satuan', $aset->satuan) == 'unit' ? 'selected' : '' }}>unit</option>
+                                    <option value="set" {{ old('satuan', $aset->satuan) == 'set' ? 'selected' : '' }}>set</option>
+                                    <option value="buah" {{ old('satuan', $aset->satuan) == 'buah' ? 'selected' : '' }}>buah</option>
+                                    <option value="pcs" {{ old('satuan', $aset->satuan) == 'pcs' ? 'selected' : '' }}>pcs</option>
+                                </select>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="tgl_aku">Tanggal Pengakuan Awal (Opsional)</label>
+                                    <input type="date" class="form-control" name="tgl_aku" id="tgl_aku" value="{{ old('tgl_aku', $aset->tgl_aku) }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label>Kota (Opsional)</label>
+                                    <input type="text" class="form-control" name="kota" value="{{ old('kota', $aset->kota) }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label>Keterangan Lokasi (Opsional)</label>
+                                <textarea class="form-control" name="ket_lok" rows="2">{{ old('ket_lok', $aset->ket_lok) }}</textarea>
                             </div>
 
                         </div>

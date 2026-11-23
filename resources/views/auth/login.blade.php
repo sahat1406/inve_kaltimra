@@ -38,7 +38,7 @@
                     name="email"
                     value="{{ old('email') }}"
                     class="form-control @error('email') is-invalid @enderror"
-                    placeholder="nama@Mail.com"
+                    placeholder="Masukkan Email  Anda"
                     required
                     autofocus
                     autocomplete="username"

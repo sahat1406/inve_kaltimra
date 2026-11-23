@@ -91,11 +91,6 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group mb-3">
-                                <label>Nomor Sub Aset (Opsional)</label>
-                                <input type="text" class="form-control" name="no_sub_aset" value="{{ old('no_sub_aset') }}">
-                            </div>
-
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="tgl_aku">Tanggal Pengakuan Awal (Opsional)</label>

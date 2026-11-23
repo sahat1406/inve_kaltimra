@@ -11,7 +11,7 @@
                     <span>Dashboard</span></a>
             </li>
     
-            @if (auth()->user()->role->role == 'admin')
+            @if (auth()->user()->role->role == 'manager')
                 <li class="menu-header">Data Master</li>
                 <li><a class="nav-link" href="/asets"><i class="fa fa-solid fa-cubes-stacked"></i>
                         <span>Aset</span></a>
@@ -44,8 +44,11 @@
     
                 {{-- MENU PENGATURAN SUDAH DITAMBAHKAN DI SINI --}}
                 <li class="menu-header">Pengaturan</li>
-                <li><a class="nav-link" href="{{ route('user.index') }}"><i class="fas fa-users-cog"></i>
+                <li class="{{ Request::is('user*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('user.index') }}"><i class="fas fa-users-cog"></i>
                         <span>Manajemen User</span></a>
+                </li>
+                <li class="{{ Request::is('profil*') || Request::is('ubah-password*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('profile') }}"><i class="fas fa-user-circle"></i>
+                        <span>Profil</span></a>
                 </li>
     
             @else
@@ -72,6 +75,11 @@
                 </li>
                 <li><a class="nav-link" href="/pelaporan-selesai"><i class="fa fa-sharp fa-file-circle-check"></i>
                         <span>Pelaporan Selesai</span></a>
+                </li>
+
+                <li class="menu-header">Pengaturan</li>
+                <li class="{{ Request::is('profil*') || Request::is('ubah-password*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('profile') }}"><i class="fas fa-user-circle"></i>
+                        <span>Profil</span></a>
                 </li>
             @endif
         </ul>

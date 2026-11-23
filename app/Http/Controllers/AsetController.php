@@ -115,13 +115,18 @@ class AsetController extends Controller
                 }
 
                 Aset::create([
-                    'kd_aset' => $kd_aset,
-                    'nm_aset' => $namaAset,
-                    'deskripsi' => $request->deskripsi,
+                    'kd_aset'        => $kd_aset,
+                    'nm_aset'        => $namaAset,
+                    'no_sub_aset'    => $request->no_sub_aset,
+                    'satuan'         => $request->satuan ?? 'unit',
+                    'deskripsi'      => $request->deskripsi,
                     'tgl_penambahan' => $request->tgl_penambahan ?? now()->format('Y-m-d'),
-                    'gambar' => $gambar,
-                    'kategori_id' => $request->kategori_id,
-                    'lokasi_id' => $request->lokasi_id,
+                    'tgl_aku'        => $request->tgl_aku,
+                    'gambar'         => $gambar,
+                    'kategori_id'    => $request->kategori_id,
+                    'lokasi_id'      => $request->lokasi_id,
+                    'kota'           => $request->kota,
+                    'ket_lok'        => $request->ket_lok,
                 ]);
             }
 
@@ -143,7 +148,7 @@ class AsetController extends Controller
 
     public function show(string $id)
     {
-        $aset = Aset::findOrFail($id);
+        $aset = Aset::with(['kategori', 'lokasi'])->findOrFail($id);
 
         // Pastikan QR code file tersedia di storage jika belum ada
         $qrCodePath = 'qrcode/' . $aset->kd_aset . '.png';
@@ -154,12 +159,24 @@ class AsetController extends Controller
             Storage::disk('public')->put($qrCodePath, $qrImage->getString());
         }
 
-        // Ambil pelaporan lengkap dengan relasi feedback-nya
-        $pelaporans = Pelaporan::with('feedback')->where('aset_id', $aset->id)->get();
+        // Ambil pelaporan lengkap dengan relasi feedback dan user pelapor
+        $pelaporans = Pelaporan::with(['feedback', 'user'])->where('aset_id', $aset->id)->orderBy('id', 'DESC')->get();
+
+        // Cari unit lain dalam batch jika aset memiliki penomoran (misal: "Meja 1")
+        $batchAsets = collect();
+        if (preg_match('/^(.*?)\s+\d+$/', $aset->nm_aset, $matches)) {
+            $baseName = trim($matches[1]);
+            $batchAsets = Aset::where('nm_aset', 'LIKE', $baseName . ' %')
+                ->where('id', '!=', $aset->id)
+                ->orderBy('id', 'ASC')
+                ->limit(12)
+                ->get();
+        }
 
         return view('asets.show', [
             'aset' => $aset,
             'pelaporans' => $pelaporans,
+            'batchAsets' => $batchAsets,
         ]);
     }
 
@@ -214,11 +231,16 @@ class AsetController extends Controller
         }
 
         $aset->update([
-            'nm_aset' => $request->nm_aset,
-            'deskripsi' => $request->deskripsi,
-            'gambar' => $gambar,
-            'kategori_id' => $request->kategori_id,
-            'lokasi_id' => $request->lokasi_id,
+            'nm_aset'        => $request->nm_aset,
+            'no_sub_aset'    => $request->no_sub_aset,
+            'satuan'         => $request->satuan ?? ($aset->satuan ?? 'unit'),
+            'deskripsi'      => $request->deskripsi,
+            'tgl_aku'        => $request->tgl_aku,
+            'kota'           => $request->kota,
+            'ket_lok'        => $request->ket_lok,
+            'gambar'         => $gambar,
+            'kategori_id'    => $request->kategori_id,
+            'lokasi_id'      => $request->lokasi_id,
         ]);
 
         return redirect('/asets')->with('success', 'Berhasil memperbarui data aset');

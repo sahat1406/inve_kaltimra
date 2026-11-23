@@ -15,9 +15,9 @@ class LoginTest extends TestCase
     {
         parent::setUp();
 
-        // Buat role admin dan user
-        Role::create(['role' => 'admin']);
-        Role::create(['role' => 'user']);
+        // Buat role manager (id: 1) dan admin (id: 2)
+        Role::create(['id' => 1, 'role' => 'manager']);
+        Role::create(['id' => 2, 'role' => 'admin']);
     }
 
     /** @test */
@@ -40,26 +40,6 @@ class LoginTest extends TestCase
     }
 
     /** @test */
-    public function user_dapat_melakukan_login_dengan_email_dan_password_yang_benar()
-    {
-        $roleUser = Role::where('role', 'user')->first();
-
-        $user = User::factory()->create([
-            'role_id' => $roleUser->id,
-            'email' => 'user@example.com',
-            'password' => bcrypt('password123'),
-        ]);
-
-        $response = $this->post('/login', [
-            'email' => 'user@example.com',
-            'password' => 'password123',
-        ]);
-
-        $response->assertRedirect('/home');
-        $this->assertAuthenticatedAs($user);
-    }
-
-    /** @test */
     public function admin_dapat_melakukan_login_dengan_email_dan_password_yang_benar()
     {
         $roleAdmin = Role::where('role', 'admin')->first();
@@ -67,12 +47,12 @@ class LoginTest extends TestCase
         $admin = User::factory()->create([
             'role_id' => $roleAdmin->id,
             'email' => 'admin@example.com',
-            'password' => bcrypt('admin123'),
+            'password' => bcrypt('password123'),
         ]);
 
         $response = $this->post('/login', [
             'email' => 'admin@example.com',
-            'password' => 'admin123',
+            'password' => 'password123',
         ]);
 
         $response->assertRedirect('/home');
@@ -80,37 +60,43 @@ class LoginTest extends TestCase
     }
 
     /** @test */
-    public function admin_tidak_dapat_login_dengan_password_yang_salah()
+    public function manager_dapat_melakukan_login_dengan_email_dan_password_yang_benar()
     {
-        $roleAdmin = Role::where('role', 'admin')->first();
+        $roleManager = Role::where('role', 'manager')->first();
 
-        $admin = User::factory()->create([
-            'role_id' => $roleAdmin->id,
-            'email' => 'admin@example.com',
-            'password' => bcrypt('admin123'),
+        $manager = User::factory()->create([
+            'role_id' => $roleManager->id,
+            'email' => 'manager@example.com',
+            'password' => bcrypt('manager123'),
         ]);
 
         $response = $this->post('/login', [
-            'email' => 'admin@example.com',
+            'email' => 'manager@example.com',
+            'password' => 'manager123',
+        ]);
+
+        $response->assertRedirect('/home');
+        $this->assertAuthenticatedAs($manager);
+    }
+
+    /** @test */
+    public function manager_tidak_dapat_login_dengan_password_yang_salah()
+    {
+        $roleManager = Role::where('role', 'manager')->first();
+
+        $manager = User::factory()->create([
+            'role_id' => $roleManager->id,
+            'email' => 'manager@example.com',
+            'password' => bcrypt('manager123'),
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => 'manager@example.com',
             'password' => 'passwordsalah',
         ]);
 
         $response->assertSessionHasErrors();
         $this->assertGuest();
-    }
-
-
-    /** @test */
-    public function user_dapat_mengakses_user_dashboard()
-    {
-        $roleUser = Role::where('role', 'user')->first();
-
-        $user = User::factory()->create([
-            'role_id' => $roleUser->id,
-        ]);
-
-        $response = $this->actingAs($user)->get('/home');
-        $response->assertStatus(200);
     }
 
     /** @test */
@@ -123,6 +109,19 @@ class LoginTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin)->get('/home');
+        $response->assertStatus(200);
+    }
+
+    /** @test */
+    public function manager_dapat_mengakses_manager_dashboard()
+    {
+        $roleManager = Role::where('role', 'manager')->first();
+
+        $manager = User::factory()->create([
+            'role_id' => $roleManager->id,
+        ]);
+
+        $response = $this->actingAs($manager)->get('/home');
         $response->assertStatus(200);
     }
 }

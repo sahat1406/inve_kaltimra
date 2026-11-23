@@ -1,48 +1,72 @@
-use App\Models\Role;
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Kategori;
-use App\Models\Lokasi;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
-class BuatQrCodeBarangTest extends TestCase
+class RegisterController extends Controller
 {
-    use RefreshDatabase;
+    /*
+    |--------------------------------------------------------------------------
+    | Register Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles the registration of new users as well as their
+    | validation and creation. By default this controller uses a trait to
+    | provide this functionality without requiring any additional code.
+    |
+    */
 
-    public function test_admin_dapat_menyimpan_barang_dan_qrcode_dibuat()
+    use RegistersUsers;
+
+    /**
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/home';
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        Storage::fake('public');
+        $this->middleware('guest');
+    }
 
-        // Tambahkan role admin secara manual ke DB test
-        $adminRole = Role::create(['id' => 1, 'role' => 'admin']);
-
-        $kategori = Kategori::factory()->create();
-        $lokasi   = Lokasi::factory()->create();
-
-        // Buat user admin dengan role_id yang sesuai
-        $admin = User::factory()->create([
-            'role_id' => $adminRole->id,
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-        $this->actingAs($admin);
+    }
 
-        $response = $this->post('/barang', [
-            'nm_barang'     => 'Laptop',
-            'deskripsi'     => 'Laptop untuk kerja',
-            'kategori_id'   => $kategori->id,
-            'lokasi_id'     => $lokasi->id,
-            'gambar'        => UploadedFile::fake()->image('laptop.png'),
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return \App\Models\User
+     */
+    protected function create(array $data)
+    {
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ]);
-
-        $response->assertRedirect('/barang');
-
-        $this->assertDatabaseHas('barangs', [
-            'nm_barang' => 'Laptop',
-        ]);
-
-        $barang = \App\Models\Barang::latest()->first();
-        $qrPath = 'qrcode/' . $barang->kd_barang . '.png';
-        Storage::disk('public')->assertExists($qrPath);
     }
 }

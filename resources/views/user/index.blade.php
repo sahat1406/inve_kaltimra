@@ -44,7 +44,7 @@
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
                                             {{-- Ganti dari $user->role->name menjadi $user->role->role --}}
-                                            <td><span class="badge badge-info">{{ $user->role->role }}</span></td>
+                                            <td><span class="badge badge-info">{{ ucfirst($user->role->role) }}</span></td>
                                             <td>
                                                 <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                                 <form action="{{ route('user.destroy', $user->id) }}" method="POST"

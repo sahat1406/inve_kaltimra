@@ -16,8 +16,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        // Diubah dari 'CheckRole' menjadi 'checkrole' agar sesuai dengan alias
-        $this->middleware('checkrole:admin');
+        $this->middleware('checkrole:manager');
     }
 
     /**

@@ -233,8 +233,8 @@
             @foreach ($asets as $aset)
                 <div class="label-card">
                     <div class="label-header">
-                        <h4>PLN INDONESIA POWER</h4>
-                        <p>SISTEM INVENTARIS ASET UPDK KALTIMRA</p>
+                        <h4>PLN NP UP KALTIMRA</h4>
+                        <p>SIA KALTIMRA</p>
                     </div>
 
                     <div class="label-body">

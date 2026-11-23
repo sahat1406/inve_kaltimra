@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <div class="brand-badge mb-3"><i class="bi bi-qr-code-scan"></i><span>SIA-PLN &bull; Sistem Inventaris Aset</span></div>
-                <h1 class="fw-bold fs-2 mb-3 lh-sm">Sistem Inventaris Aset PLN Nuusantara Power UP Kaltimra</h1>
+                <h1 class="fw-bold fs-2 mb-3 lh-sm">Sistem Inventaris Aset PLN Nusantara Power UP Kaltimra</h1>
                 <p class="text-white-50 mb-0" style="max-width:480px; font-size:0.95rem;"></p>
             </div>
             <div class="d-flex flex-column gap-3 my-4" style="max-width:480px;">

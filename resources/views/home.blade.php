@@ -6,7 +6,17 @@
     </div>
 
     <div class="section-body">
-        @if (auth()->user()->role->role == 'admin')
+        @if (session('status'))
+            <div class="alert alert-success alert-dismissible show fade">
+                <div class="alert-body">
+                    <button class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                    </button>
+                    {{ session('status') }}
+                </div>
+            </div>
+        @endif
+        @if (auth()->user()->role->role == 'manager')
             <div class="row">
                 <div class="col-lg-3">
                     <div class="card card-primary">

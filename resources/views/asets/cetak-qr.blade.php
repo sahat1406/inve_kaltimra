@@ -173,8 +173,8 @@
 
     <div class="label-card">
         <div class="label-header">
-            <h3>PLN INDONESIA POWER</h3>
-            <p>SISTEM INVENTARIS ASET UPDK KALTIMRA</p>
+            <h3>PLN NP UP KALTIMRA</h3>
+            <p>SIA KALTIMRA</p>
         </div>
 
         <div class="label-body">

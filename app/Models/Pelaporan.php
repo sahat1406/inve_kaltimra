@@ -28,4 +28,9 @@ class Pelaporan extends Model
     {
         return $this->hasOne(Feedback::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
