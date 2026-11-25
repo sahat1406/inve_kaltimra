@@ -134,15 +134,21 @@
                                 </button>
                             </form>
                         @elseif($pelaporan->status == 'selesai')
-                            @if ($feedback && $feedback->analisis_perbaikan)
+                            @php
+                                $analisisPerbaikan = $feedback?->analisis_perbaikan ?: $feedback?->komentar;
+                            @endphp
+                            @if ($analisisPerbaikan)
                                 <label for="analisis_perbaikan">From Admin</label><br>
                                 <div class="alert alert-light">
-                                    {{ $feedback->analisis_perbaikan }}
+                                    {{ $analisisPerbaikan }}
                                 </div>
                             @else
+                                <div class="alert alert-light text-muted">
+                                    Belum ada analisis perbaikan.
+                                </div>
                             @endif
 
-                            @if ($feedbackReply && $feedbackReply->feedback_replies && $feedbackReply->feedback_replies)
+                            @if ($feedbackReply && $feedbackReply->feedback_replies)
                                 <label for="feedback_replies">From User</label><br>
                                 <div class="alert alert-primary">
                                     {{ $feedbackReply->feedback_replies }}

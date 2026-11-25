@@ -1,88 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Inventaris</title>
-    <style>
-        .container {
-            text-align: center;
-            margin: auto;
-        }
-
-        .column {
-            text-align: center;
-        }
-
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        table {
-            margin: auto;
-            width: 100%;
-        }
-
-        tr {
-            text-align: left;
-        }
-
-        table,
-        th,
-        td {
-            border-collapse: collapse;
-            border: 1px solid black;
-        }
-
-        th,
-        td {
-            padding: 5px;
-        }
-
-        th {
-            background-color: gainsboro;
-        }
-    </style>
+    <title>Laporan Inventaris Aset</title>
+    @include('partials.laporan-styles')
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="column">
-                <h2>Laporan Inventaris Aset</h2>
-            </div>
-            <div class="col">
-                <table id="table_id" class="display">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Kode Aset</th>
-                            <th>Nama Aset</th>
-                            <th>Tgl. Penambahan</th>
-                            <th>Lokasi</th>
-                            {{-- <th>Merek</th> --}}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($asets as $aset)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $aset->kd_aset }}</td>
-                                <td>{{ $aset->nm_aset }}</td>
-                                <td>{{ \Carbon\Carbon::parse($aset->tgl_penambahan)->format('d-m-Y') }}</td>
-                                <td>{{ $aset->lokasi->lokasi }}</td>
-                                {{-- <td>{{ $aset->merk->merk }}</td> --}}
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    @php
+        $bulanIndo = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+        ];
+        $now = \Carbon\Carbon::now();
+        $tanggalCetak = $now->day . ' ' . $bulanIndo[$now->month] . ' ' . $now->year;
+    @endphp
+
+    @include('partials.laporan-kop', [
+        'title'        => 'Laporan Inventaris Aset',
+        'tanggalCetak' => $tanggalCetak,
+        'metaSummary'  => 'Total Aset: ' . $asets->count() . ' item',
+    ])
+
+    <!-- Tabel Data Aset -->
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th style="width: 6%;">No</th>
+                <th style="width: 18%;">Kode Aset</th>
+                <th style="width: 34%;">Nama Aset</th>
+                <th style="width: 17%;">Tgl. Penambahan</th>
+                <th style="width: 25%;">Lokasi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($asets as $aset)
+                <tr>
+                    <td class="text-center">{{ $loop->iteration }}</td>
+                    <td class="text-left">{{ $aset->kd_aset }}</td>
+                    <td class="text-left">{{ $aset->nm_aset }}</td>
+                    <td class="text-center">{{ \Carbon\Carbon::parse($aset->tgl_penambahan)->format('d-m-Y') }}</td>
+                    <td class="text-left">{{ optional($aset->lokasi)->lokasi ?? '-' }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="text-center">Belum ada data aset inventaris.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+    @include('partials.laporan-ttd', ['tanggalCetak' => $tanggalCetak])
 </body>
 
 </html>

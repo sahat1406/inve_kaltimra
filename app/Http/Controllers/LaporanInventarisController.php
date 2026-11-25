@@ -16,13 +16,18 @@ class LaporanInventarisController extends Controller
         ]);
     }
 
-    public function cetakLaporan()
+    public function cetakLaporan(Request $request)
     {
-        $aset = Aset::orderBy('id', 'DESC')->get();
+        $selectedIds = $this->parseSelectedIds($request);
+
+        $aset = Aset::with('lokasi')
+            ->when($selectedIds, fn ($query) => $query->whereIn('id', $selectedIds))
+            ->orderBy('id', 'DESC')
+            ->get();
 
         $pdf = PDF::loadView('laporan-inventaris.laporan', [
-            'asets'    => $aset
-        ]);
+            'asets' => $aset,
+        ])->setPaper('a4', 'portrait');
 
         return $pdf->stream('laporan-inventaris.pdf');
     }

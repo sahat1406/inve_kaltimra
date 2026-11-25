@@ -90,7 +90,7 @@
             <tr>
                 <td><b>Analisis Perbaikan</b></td>
                 <td>:</td>
-                <td>{{ $feedback?->analisis_perbaikan ?? '-' }}</td>
+                <td>{{ ($feedback?->analisis_perbaikan ?: $feedback?->komentar) ?? '-' }}</td>
             </tr>
             <tr>
                 <td><b>Feedback User</b></td>

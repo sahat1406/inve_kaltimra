@@ -95,15 +95,22 @@
                         Analisis Perbaikan & Feedback
                     </div>
                     <div class="card-body">
-                        @if ($feedback && $feedback->analisis_perbaikan)
+                        @php
+                            $analisisPerbaikan = $feedback?->analisis_perbaikan ?: $feedback?->komentar;
+                        @endphp
+
+                        @if ($analisisPerbaikan)
                             <label for="analisis_perbaikan">From Admin</label><br>
                             <div class="alert alert-light">
-                                {{ $feedback->analisis_perbaikan }}
+                                {{ $analisisPerbaikan }}
                             </div>
                         @else
+                            <div class="alert alert-light text-muted">
+                                Belum ada analisis perbaikan.
+                            </div>
                         @endif
 
-                        @if ($feedbackReply && $feedbackReply->feedback_replies && $feedbackReply->feedback_replies)
+                        @if ($feedbackReply && $feedbackReply->feedback_replies)
                             <label for="feedback_replies">From User</label><br>
                             <div class="alert alert-primary">
                                 {{ $feedbackReply->feedback_replies }}
@@ -112,11 +119,10 @@
 
                         <hr>
 
-                        <form action="/cek-pelaporan/detail/{{ $pelaporan->id }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="feedback_id" value="{{ $feedback ? $feedback->id : null }}">
-                            @if ($feedbackReply && $feedbackReply->feedback_replies && $feedbackReply->feedback_replies)
-                            @else
+                        @if ($feedback && !($feedbackReply && $feedbackReply->feedback_replies))
+                            <form action="/cek-pelaporan/detail/{{ $pelaporan->id }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="feedback_id" value="{{ $feedback->id }}">
                                 <div class="mb-3">
                                     <label for="feedback_replies">Berikan Feedback</label>
                                     <textarea class="form-control" name="feedback_replies" id="feedback_replies" cols="30" rows="10"></textarea>
@@ -125,8 +131,10 @@
                                     @enderror
                                 </div>
                                 <button type="submit" class="btn btn-success my-3 float-right">Kirim Balasan</button>
-                            @endif
-                        </form>
+                            </form>
+                        @elseif (!$feedback)
+                            <p class="text-muted mb-0">Feedback dapat diberikan setelah pelaporan selesai diperbaiki.</p>
+                        @endif
                     </div>
                 </div>
             </div>

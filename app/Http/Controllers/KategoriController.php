@@ -91,6 +91,16 @@ class KategoriController extends Controller
     public function destroy(string $id)
     {
         $kategori = Kategori::find($id);
+
+        if (!$kategori) {
+            return redirect()->back()->with('error', 'Kategori tidak ditemukan.');
+        }
+
+        // Cek apakah kategori masih digunakan oleh aset
+        if ($kategori->asets()->count() > 0) {
+            return redirect()->back()->with('error', 'Kategori tidak dapat dihapus karena masih digunakan oleh ' . $kategori->asets()->count() . ' aset.');
+        }
+
         $kategori->delete();
 
         return redirect()->back()->with('success', 'Berhasil menghapus data kategori');

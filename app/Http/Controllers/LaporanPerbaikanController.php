@@ -16,13 +16,19 @@ class LaporanPerbaikanController extends Controller
         ]);
     }
 
-    public function cetakLaporan()
+    public function cetakLaporan(Request $request)
     {
-        $pelaporan = Pelaporan::where('status', 'selesai')->orderBy('id', 'DESC')->get();
+        $selectedIds = $this->parseSelectedIds($request);
+
+        $pelaporan = Pelaporan::with('aset.lokasi')
+            ->where('status', 'selesai')
+            ->when($selectedIds, fn ($query) => $query->whereIn('id', $selectedIds))
+            ->orderBy('id', 'DESC')
+            ->get();
 
         $pdf = PDF::loadView('laporan-perbaikan.laporan', [
-            'pelaporans'    => $pelaporan
-        ]);
+            'pelaporans' => $pelaporan,
+        ])->setPaper('a4', 'portrait');
 
         return $pdf->stream('laporan-perbaikan.pdf');
     }

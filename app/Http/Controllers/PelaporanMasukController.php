@@ -43,13 +43,13 @@ class PelaporanMasukController extends Controller
         $pelaporan = Pelaporan::findOrFail($id);
         $pelaporan->update(['status' => 'selesai']);
 
-        $feedback = new Feedback([
-            'pelaporan_id'       => $request->pelaporan_id,
-            'analisis_perbaikan' => $request->analisis_perbaikan,
-            'user_id'            => Auth::id()
-        ]);
-
-        $feedback->save();
+        Feedback::updateOrCreate(
+            ['pelaporan_id' => $pelaporan->id],
+            [
+                'analisis_perbaikan' => $request->analisis_perbaikan,
+                'user_id'            => Auth::id(),
+            ]
+        );
 
         return redirect()->back()->with('success', 'Berhasil mengubah status pelaporan menjadi Selesai');
     }

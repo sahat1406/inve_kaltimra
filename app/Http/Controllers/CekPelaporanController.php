@@ -20,7 +20,7 @@ class CekPelaporanController extends Controller
 
     public function detail($id)
     {
-        $pelaporan      = Pelaporan::find($id);
+        $pelaporan      = Pelaporan::findOrFail($id);
         $feedback       = Feedback::where('pelaporan_id', $pelaporan->id)->first();
         $feedbackReply  = $feedback ? FeedbackReply::where('feedback_id', $feedback->id)->first() : null;
 
@@ -33,7 +33,16 @@ class CekPelaporanController extends Controller
 
     public function store(Request $request, $id)
     {
-        $feedback = Feedback::find($id);
+        $feedback = $request->filled('feedback_id')
+            ? Feedback::find($request->feedback_id)
+            : Feedback::where('pelaporan_id', $id)->first();
+
+        if (!$feedback) {
+            return back()->withErrors([
+                'feedback_replies' => 'Analisis perbaikan belum tersedia untuk pelaporan ini.',
+            ])->withInput();
+        }
+
         $validator = Validator::make($request->all(), [
             'feedback_replies'  => 'required'
         ], [

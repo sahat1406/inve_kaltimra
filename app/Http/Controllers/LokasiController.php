@@ -92,6 +92,16 @@ class LokasiController extends Controller
     public function destroy(string $id)
     {
         $lokasi = Lokasi::find($id);
+
+        if (!$lokasi) {
+            return redirect()->back()->with('error', 'Lokasi tidak ditemukan.');
+        }
+
+        // Cek apakah lokasi masih digunakan oleh aset
+        if ($lokasi->asets()->count() > 0) {
+            return redirect()->back()->with('error', 'Lokasi tidak dapat dihapus karena masih digunakan oleh ' . $lokasi->asets()->count() . ' aset.');
+        }
+
         $lokasi->delete();
 
         return redirect('/lokasi')->with('success', 'Berhasil menghapus data lokasi');
