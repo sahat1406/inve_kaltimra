@@ -66,7 +66,7 @@
                         <div class="card-header">
                             Pelaporan Menunggu
                             <div class="ml-auto">
-                                <a href="/pelaporan-masuk" class="btn btn-warning"><i class="fa fa-back"></i> Pelaporan
+                                <a href="/pelaporan-masuk" class="btn btn-warning"><i class="fa fa-back"></i> Laporan
                                     Masuk</a>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
                         <div class="card-header">
                             Pelaporan Sedang Dikerjakan
                             <div class="ml-auto">
-                                <a href="/pelaporan-masuk" class="btn btn-primary"><i class="fa fa-back"></i> Pelaporan
+                                <a href="/pelaporan-masuk" class="btn btn-primary"><i class="fa fa-back"></i> Laporan
                                     Masuk</a>
                             </div>
                         </div>

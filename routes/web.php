@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/asets/cetak-semua-qr', [AsetController::class, 'cetakSemuaQr']);
         Route::get('/asets/{id}/cetak-qr', [AsetController::class, 'cetakQr']);
+        Route::delete('/asets/hapus-terpilih', [AsetController::class, 'destroySelected'])->name('asets.destroySelected');
         Route::resource('/asets', AsetController::class);
         Route::resource('/kategori', KategoriController::class);
         Route::resource('/lokasi', LokasiController::class);

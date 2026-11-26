@@ -80,7 +80,11 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="tgl_aku">Tanggal Pengakuan Awal (Opsional)</label>
-                                    <input type="date" class="form-control" name="tgl_aku" id="tgl_aku" value="{{ old('tgl_aku', $aset->tgl_aku) }}">
+                                    <input type="date" class="form-control @error('tgl_aku') is-invalid @enderror" name="tgl_aku" id="tgl_aku" max="{{ now()->format('Y-m-d') }}" data-max-today="true" value="{{ old('tgl_aku', $aset->tgl_aku) }}">
+                                    <small class="form-text text-muted">Maksimal tanggal hari ini.</small>
+                                    @error('tgl_aku')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Kota (Opsional)</label>

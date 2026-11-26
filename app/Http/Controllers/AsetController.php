@@ -32,26 +32,46 @@ class AsetController extends Controller
         ]);
     }
 
+    /**
+     * Validasi input form tambah maupun ubah data aset.
+     */
+    private function validateAset(Request $request, bool $isUpdate = false): \Illuminate\Contracts\Validation\Validator
+    {
+        $today = now()->format('Y-m-d');
+
+        $rules = [
+            'gambar'      => $isUpdate ? 'nullable|mimes:jpeg,jpg,png' : 'required|mimes:jpeg,jpg,png',
+            'nm_aset'     => 'required',
+            'deskripsi'   => 'required',
+            'kategori_id' => 'required',
+            'lokasi_id'   => 'required',
+            'tgl_aku'     => 'nullable|date|before_or_equal:' . $today,
+        ];
+
+        $messages = [
+            'gambar.mimes'            => 'Format gambar yang diizinkan: jpeg, jpg, png.',
+            'nm_aset.required'        => 'Form wajib diisi!',
+            'deskripsi.required'      => 'Form wajib diisi!',
+            'kategori_id.required'    => 'Form wajib dipilih!',
+            'lokasi_id.required'      => 'Form wajib dipilih!',
+            'tgl_aku.date'            => 'Format tanggal pengakuan awal tidak valid!',
+            'tgl_aku.before_or_equal' => 'Tanggal pengakuan awal tidak boleh lebih dari hari ini!',
+        ];
+
+        if (!$isUpdate) {
+            $rules['qty'] = 'nullable|integer|min:1|max:100';
+            $messages['gambar.required'] = 'Wajib menambahkan gambar!';
+            $messages['qty.integer'] = 'Quantity harus berupa angka!';
+            $messages['qty.min'] = 'Quantity minimal 1!';
+            $messages['qty.max'] = 'Quantity maksimal 100 sekaligus!';
+        }
+
+        return Validator::make($request->all(), $rules, $messages);
+    }
+
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'gambar' => 'required|mimes:jpeg,jpg,png',
-            'nm_aset' => 'required',
-            'deskripsi' => 'required',
-            'kategori_id' => 'required',
-            'lokasi_id' => 'required',
-            'qty' => 'nullable|integer|min:1|max:100',
-        ], [
-            'gambar.required' => 'Wajib menambahkan gambar!',
-            'gambar.mimes' => 'Format gambar yang diizinkan: jpeg, jpg, png.',
-            'nm_aset.required' => 'Form wajib diisi!',
-            'deskripsi.required' => 'Form wajib diisi!',
-            'kategori_id.required' => 'Form wajib dipilih!',
-            'lokasi_id.required' => 'Form wajib dipilih!',
-            'qty.integer' => 'Quantity harus berupa angka!',
-            'qty.min' => 'Quantity minimal 1!',
-            'qty.max' => 'Quantity maksimal 100 sekaligus!',
-        ]);
+        $validator = $this->validateAset($request);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -92,30 +112,16 @@ class AsetController extends Controller
         }
 
         $writer = new PngWriter();
-        $generatedCodes = [];
+        $createdQrPaths = [];
 
         DB::beginTransaction();
         try {
             for ($step = 0; $step < $qty; $step++) {
                 $namaAset = $qty > 1 ? ($baseName . ' ' . ($startIndex + $step)) : $baseName;
 
-                // Generate kd_aset unik
-                do {
-                    $kd_aset = 'AST-' . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT);
-                } while (in_array($kd_aset, $generatedCodes) || Aset::where('kd_aset', $kd_aset)->exists());
-
-                $generatedCodes[] = $kd_aset;
-
-                // Buat file QR Code jika belum ada
-                $qrCodePath = 'qrcode/' . $kd_aset . '.png';
-                if (!Storage::disk('public')->exists($qrCodePath)) {
-                    $qrCode = new QrCode($kd_aset);
-                    $qrImage = $writer->write($qrCode);
-                    Storage::disk('public')->put($qrCodePath, $qrImage->getString());
-                }
-
-                Aset::create([
-                    'kd_aset'        => $kd_aset,
+                // Buat record terlebih dahulu agar nomor urut mengikuti ID yang unik dan berurutan
+                $aset = Aset::create([
+                    'kd_aset'        => 'TMP-' . Str::uuid(),
                     'nm_aset'        => $namaAset,
                     'no_sub_aset'    => $request->no_sub_aset,
                     'satuan'         => $request->satuan ?? 'unit',
@@ -128,6 +134,23 @@ class AsetController extends Controller
                     'kota'           => $request->kota,
                     'ket_lok'        => $request->ket_lok,
                 ]);
+
+                $sequence = $aset->id;
+                do {
+                    $kd_aset = 'AST-' . str_pad($sequence, 6, '0', STR_PAD_LEFT);
+                    $sequence++;
+                } while (Aset::where('kd_aset', $kd_aset)->where('id', '!=', $aset->id)->exists());
+
+                $aset->update(['kd_aset' => $kd_aset]);
+
+                // Buat file QR Code jika belum ada
+                $qrCodePath = 'qrcode/' . $kd_aset . '.png';
+                if (!Storage::disk('public')->exists($qrCodePath)) {
+                    $qrCode = new QrCode($kd_aset);
+                    $qrImage = $writer->write($qrCode);
+                    Storage::disk('public')->put($qrCodePath, $qrImage->getString());
+                    $createdQrPaths[] = $qrCodePath;
+                }
             }
 
             DB::commit();
@@ -135,6 +158,11 @@ class AsetController extends Controller
             DB::rollBack();
             if ($gambar && Storage::disk('public')->exists($gambar)) {
                 Storage::disk('public')->delete($gambar);
+            }
+            foreach ($createdQrPaths as $qrPath) {
+                if (Storage::disk('public')->exists($qrPath)) {
+                    Storage::disk('public')->delete($qrPath);
+                }
             }
             return back()->with('error', 'Gagal menambahkan aset: ' . $e->getMessage())->withInput();
         }
@@ -195,19 +223,7 @@ class AsetController extends Controller
     {
         $aset = Aset::findOrFail($id);
 
-        $validator = Validator::make($request->all(), [
-            'gambar' => 'nullable|mimes:jpeg,jpg,png',
-            'nm_aset' => 'required',
-            'deskripsi' => 'required',
-            'kategori_id' => 'required',
-            'lokasi_id' => 'required'
-        ], [
-            'gambar.mimes' => 'Format gambar yang diizinkan: jpeg, jpg, png.',
-            'nm_aset.required' => 'Form wajib diisi!',
-            'deskripsi.required' => 'Form wajib diisi!',
-            'kategori_id.required' => 'Form wajib dipilih!',
-            'lokasi_id.required' => 'Form wajib dipilih!',
-        ]);
+        $validator = $this->validateAset($request, true);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -246,11 +262,11 @@ class AsetController extends Controller
         return redirect('/asets')->with('success', 'Berhasil memperbarui data aset');
     }
 
-    public function destroy(string $id)
+    /**
+     * Hapus satu record aset beserta QR Code dan gambar fisiknya (jika tidak dipakai aset lain).
+     */
+    private function deleteAsetRecord(Aset $aset): void
     {
-        $aset = Aset::findOrFail($id);
-
-        // Hapus gambar fisik hanya jika tidak dipakai oleh aset lain
         if ($aset->gambar && Storage::disk('public')->exists($aset->gambar)) {
             $isShared = Aset::where('gambar', $aset->gambar)->where('id', '!=', $aset->id)->exists();
             if (!$isShared) {
@@ -264,8 +280,45 @@ class AsetController extends Controller
         }
 
         $aset->delete();
+    }
+
+    public function destroy(string $id)
+    {
+        $aset = Aset::findOrFail($id);
+        $this->deleteAsetRecord($aset);
 
         return redirect()->back()->with('success', 'Berhasil menghapus data aset');
+    }
+
+    /**
+     * Hapus beberapa aset terpilih sekaligus.
+     */
+    public function destroySelected(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ids'   => 'required|array|min:1',
+            'ids.*' => 'integer|exists:asets,id',
+        ], [
+            'ids.required' => 'Pilih minimal satu aset yang ingin dihapus.',
+            'ids.array'    => 'Format pilihan aset tidak valid.',
+            'ids.min'      => 'Pilih minimal satu aset yang ingin dihapus.',
+            'ids.*.exists' => 'Terdapat data aset yang tidak ditemukan.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->with('error', $validator->errors()->first());
+        }
+
+        $ids = array_values(array_unique($request->input('ids', [])));
+
+        DB::transaction(function () use ($ids) {
+            $asets = Aset::whereIn('id', $ids)->get();
+            foreach ($asets as $aset) {
+                $this->deleteAsetRecord($aset);
+            }
+        });
+
+        return redirect('/asets')->with('success', 'Berhasil menghapus ' . count($ids) . ' data aset terpilih');
     }
 
     /**

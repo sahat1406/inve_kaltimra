@@ -6,3 +6,19 @@
  */
 
 "use strict";
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('input[type="date"][data-max-today]').forEach(function (input) {
+        var validateDate = function () {
+            if (input.value && input.max && input.value > input.max) {
+                input.setCustomValidity('Tanggal pengakuan awal tidak boleh lebih dari hari ini.');
+            } else {
+                input.setCustomValidity('');
+            }
+        };
+
+        input.addEventListener('input', validateDate);
+        input.addEventListener('change', validateDate);
+        validateDate();
+    });
+});

@@ -99,9 +99,16 @@ class TambahAsetMultiQtyTest extends TestCase
             Storage::disk('public')->assertExists('qrcode/' . $asets[$i - 1]->kd_aset . '.png');
         }
 
-        // Cek bahwa semua kode aset unik
+        // Cek bahwa semua kode aset unik dan berurutan
         $kdAsetList = $asets->pluck('kd_aset')->toArray();
         $this->assertCount(5, array_unique($kdAsetList));
+        $this->assertEquals([
+            'AST-000001',
+            'AST-000002',
+            'AST-000003',
+            'AST-000004',
+            'AST-000005',
+        ], $kdAsetList);
 
         // Cek bahwa semua aset menggunakan file gambar yang sama
         $gambarList = $asets->pluck('gambar')->toArray();
@@ -212,5 +219,39 @@ class TambahAsetMultiQtyTest extends TestCase
         $responseAll = $this->get('/asets/cetak-semua-qr');
         $responseAll->assertStatus(200);
         $responseAll->assertSee($aset->kd_aset);
+    }
+
+    /** @test */
+    public function kode_aset_berurutan_dan_melewati_kode_yang_sudah_ada()
+    {
+        // Simulasikan sudah ada aset dengan kode AST-000002 pada id 1
+        Aset::create([
+            'kd_aset' => 'AST-000002',
+            'nm_aset' => 'Aset Lama',
+            'deskripsi' => 'Aset eksisting',
+            'tgl_penambahan' => now()->format('Y-m-d'),
+            'gambar' => 'gambar/lama.jpg',
+            'kategori_id' => $this->kategori->id,
+            'lokasi_id' => $this->lokasi->id,
+        ]);
+
+        // Penambahan berikutnya (id 2 -> bentrok AST-000002 -> lompat ke AST-000003)
+        $this->post('/asets', [
+            'nm_aset' => 'Scanner',
+            'deskripsi' => 'Scanner dokumen',
+            'kategori_id' => $this->kategori->id,
+            'lokasi_id' => $this->lokasi->id,
+            'qty' => 2,
+            'gambar' => UploadedFile::fake()->image('scanner.jpg'),
+        ])->assertRedirect('/asets');
+
+        $newCodes = Aset::where('nm_aset', 'LIKE', 'Scanner%')
+            ->orderBy('id', 'asc')
+            ->pluck('kd_aset')
+            ->toArray();
+
+        $this->assertEquals(['AST-000003', 'AST-000004'], $newCodes);
+        Storage::disk('public')->assertExists('qrcode/AST-000003.png');
+        Storage::disk('public')->assertExists('qrcode/AST-000004.png');
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('content')
     <div class="section-header">
-        <h1>Pelaporan Masuk</h1>
+        <h1>Laporan Masuk</h1>
     </div>
 
     <div class="section-body">

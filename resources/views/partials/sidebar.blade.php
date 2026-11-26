@@ -28,10 +28,10 @@
     
                 <li class="menu-header">Pelaporan</li>
                 <li><a class="nav-link" href="/pelaporan-masuk"><i class="fa fa-solid fa-file-arrow-down"></i>
-                        <span>Pelaporan masuk</span></a>
+                        <span>Laporan Masuk</span></a>
                 </li>
                 <li><a class="nav-link" href="/pelaporan-selesai"><i class="fa fa-sharp fa-file-circle-check"></i>
-                        <span>Pelaporan Selesai</span></a>
+                        <span>Laporan Selesai</span></a>
                 </li>
     
                 <li class="menu-header">Laporan</li>
@@ -71,10 +71,10 @@
                         <span>Pelaporan Aset</span></a>
                 </li>
                 <li><a class="nav-link" href="/cek-pelaporan"><i class="fa fa-solid fa-file-circle-question"></i>
-                        <span>Cek Hasil Pelaporan</span></a>
+                        <span>Cek Hasil Laporan</span></a>
                 </li>
                 <li><a class="nav-link" href="/pelaporan-selesai"><i class="fa fa-sharp fa-file-circle-check"></i>
-                        <span>Pelaporan Selesai</span></a>
+                        <span>Laporan Selesai</span></a>
                 </li>
 
                 <li class="menu-header">Pengaturan</li>
